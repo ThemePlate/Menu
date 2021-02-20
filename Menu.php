@@ -36,16 +36,16 @@ class Menu {
 			if ( (int) $item->menu_item_parent === $parent ) {
 				$children = $this->prepare( $items, (int) $item->ID );
 
-				$prepared[] = [
+				$prepared[] = (object) [
 					'id'       => $item->ID,
 					'slug'     => $item->post_name,
-					'parent'   => $item->menu_item_parent,
+					'parent'   => (int) $item->menu_item_parent,
 					'label'    => $item->title,
 					'url'      => $item->url,
 					'target'   => $item->target,
 					'title'    => $item->attr_title,
 					'info'     => $item->description,
-					'classes'  => $item->classes,
+					'classes'  => array_filter( $item->classes ),
 					'xfn'      => $item->xfn,
 					'children' => $children,
 				];
