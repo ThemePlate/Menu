@@ -19,11 +19,11 @@ class Menu {
 
 		$locations = get_nav_menu_locations();
 
-		$this->object = wp_get_nav_menu_object( $locations[ $location ] ?: $location );
+		$this->object = wp_get_nav_menu_object( $locations[ $location ] ?? $location );
 
 		$items = wp_get_nav_menu_items( $this->object );
 
-		$this->items = $this->prepare( $items );
+		$this->items = $this->prepare( $items ?: [] );
 
 	}
 
@@ -66,28 +66,28 @@ class Menu {
 
 	public function get_id() {
 
-		return $this->object->term_id;
+		return $this->object->term_id ?? 0;
 
 	}
 
 
 	public function get_name() {
 
-		return $this->object->name;
+		return $this->object->name ?? '';
 
 	}
 
 
 	public function get_slug() {
 
-		return $this->object->slug;
+		return $this->object->slug ?? '';
 
 	}
 
 
 	public function get_count() {
 
-		return $this->object->count;
+		return $this->object->count ?? 0;
 
 	}
 
