@@ -64,6 +64,34 @@ class Menu {
 	}
 
 
+	public function get_id() {
+
+		return $this->object->term_id;
+
+	}
+
+
+	public function get_name() {
+
+		return $this->object->name;
+
+	}
+
+
+	public function get_slug() {
+
+		return $this->object->slug;
+
+	}
+
+
+	public function get_count() {
+
+		return $this->object->count;
+
+	}
+
+
 	public function get_items() {
 
 		return $this->items;
