@@ -23,6 +23,8 @@ class Menu {
 
 		$items = wp_get_nav_menu_items( $this->object );
 
+		_wp_menu_item_classes_by_context( $items );
+
 		$this->items = $this->prepare( $items ?: [] );
 
 	}
@@ -48,6 +50,10 @@ class Menu {
 					'classes'  => array_filter( $item->classes ),
 					'xfn'      => $item->xfn,
 					'children' => $children,
+
+					'is_active'          => $item->current,
+					'is_active_parent'   => $item->current_item_parent,
+					'is_active_ancestor' => $item->current_item_ancestor,
 				];
 			}
 		}
