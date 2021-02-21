@@ -30,6 +30,37 @@ class Menu {
 	}
 
 
+	private function filter( $class ) {
+
+		if ( ! $class ) {
+			return false;
+		}
+
+		$blacklist = [
+			'menu-item',
+			'menu-item-home',
+			'menu-item-privacy-policy',
+			'current-menu-item',
+			'current-menu-ancestor',
+			'current-menu-parent',
+			'page_item',
+			'current_page_item',
+			'current_page_parent',
+			'current_page_ancestor',
+		];
+
+		if ( in_array( $class, $blacklist, true ) ) {
+			return false;
+		}
+
+		// menu-item-type-test menu-item-object-test page-item-2 current-test-ancestor current-test-parent
+		$pattern = '^(menu-item-(type|object)-\w+|page-item-\d+|current-\w+-(parent|ancestor))$';
+
+		return ! preg_match( '/' . $pattern . '/', $class );
+
+	}
+
+
 	private function prepare( $items, $parent = 0 ) {
 
 		$prepared = [];
@@ -47,7 +78,7 @@ class Menu {
 					'target'   => $item->target,
 					'title'    => $item->attr_title,
 					'info'     => $item->description,
-					'classes'  => array_filter( $item->classes ),
+					'classes'  => array_filter( $item->classes, [ $this, 'filter' ] ),
 					'xfn'      => $item->xfn,
 					'children' => $children,
 
