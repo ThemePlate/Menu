@@ -12,7 +12,7 @@ namespace ThemePlate;
 class Menu {
 
 	private $object;
-	private $items = [];
+	private $items = array();
 
 
 	public function __construct( $location ) {
@@ -25,7 +25,8 @@ class Menu {
 
 		_wp_menu_item_classes_by_context( $items );
 
-		$this->items = $this->prepare( $items ?: [] );
+		// phpcs:ignore Universal.Operators.DisallowShortTernary
+		$this->items = $this->prepare( $items ?: array() );
 
 	}
 
@@ -36,7 +37,7 @@ class Menu {
 			return false;
 		}
 
-		$blacklist = [
+		$blacklist = array(
 			'menu-item',
 			'menu-item-home',
 			'menu-item-privacy-policy',
@@ -47,7 +48,7 @@ class Menu {
 			'current_page_item',
 			'current_page_parent',
 			'current_page_ancestor',
-		];
+		);
 
 		if ( in_array( $class, $blacklist, true ) ) {
 			return false;
@@ -63,29 +64,29 @@ class Menu {
 
 	private function prepare( $items, $parent = 0 ) {
 
-		$prepared = [];
+		$prepared = array();
 
 		foreach ( $items as $item ) {
 			if ( (int) $item->menu_item_parent === $parent ) {
 				$children = $this->prepare( $items, (int) $item->ID );
 
-				$prepared[] = (object) [
-					'id'       => $item->ID,
-					'slug'     => $item->post_name,
-					'parent'   => (int) $item->menu_item_parent,
-					'label'    => $item->title,
-					'url'      => $item->url,
-					'target'   => $item->target,
-					'title'    => $item->attr_title,
-					'info'     => $item->description,
-					'classes'  => array_filter( $item->classes, [ $this, 'filter' ] ),
-					'xfn'      => $item->xfn,
-					'children' => $children,
+				$prepared[] = (object) array(
+					'id'                 => $item->ID,
+					'slug'               => $item->post_name,
+					'parent'             => (int) $item->menu_item_parent,
+					'label'              => $item->title,
+					'url'                => $item->url,
+					'target'             => $item->target,
+					'title'              => $item->attr_title,
+					'info'               => $item->description,
+					'classes'            => array_filter( $item->classes, array( $this, 'filter' ) ),
+					'xfn'                => $item->xfn,
+					'children'           => $children,
 
 					'is_active'          => $item->current,
 					'is_active_parent'   => $item->current_item_parent,
 					'is_active_ancestor' => $item->current_item_ancestor,
-				];
+				);
 			}
 		}
 
