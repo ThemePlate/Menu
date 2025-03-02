@@ -1,13 +1,15 @@
 {
 	"name": "themeplate/menu",
 	"description": "ThemePlate menu iterator",
-	"license": "GPL-3.0",
+	"license": "GPL-3.0-only",
 	"authors": [
 		{
 			"name": "Gene Alyson Fortunado Torcende",
 			"email": "genealyson.torcende@gmail.com"
 		}
 	],
+	"minimum-stability": "dev",
+	"prefer-stable": true,
 	"require": {
 		"php": "^7.2|^8.0"
 	},

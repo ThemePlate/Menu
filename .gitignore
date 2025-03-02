@@ -1,1 +1,6 @@
+/.vscode/
+/.idea/
+/.cache/
 /vendor/
+/composer.lock
+.DS_Store
