@@ -36,7 +36,13 @@ class Menu {
 
 		$locations = get_nav_menu_locations();
 
-		$this->object = wp_get_nav_menu_object( $locations[ $location ] ?? $location );
+		$object = wp_get_nav_menu_object( $locations[ $location ] ?? $location );
+
+		if ( ! $object ) {
+			return;
+		}
+
+		$this->object = $object;
 
 		$items = wp_get_nav_menu_items( $this->object );
 
