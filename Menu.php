@@ -31,9 +31,9 @@ class Menu {
 	}
 
 
-	private function filter( $class ) {
+	private function filter( $classname ) {
 
-		if ( ! $class ) {
+		if ( ! $classname ) {
 			return false;
 		}
 
@@ -50,24 +50,24 @@ class Menu {
 			'current_page_ancestor',
 		);
 
-		if ( in_array( $class, $blacklist, true ) ) {
+		if ( in_array( $classname, $blacklist, true ) ) {
 			return false;
 		}
 
 		// menu-item-type-test menu-item-object-test page-item-2 current-test-ancestor current-test-parent
 		$pattern = '^(menu-item-(type|object)-\w+|page-item-\d+|current-\w+-(parent|ancestor))$';
 
-		return ! preg_match( '/' . $pattern . '/', $class );
+		return ! preg_match( '/' . $pattern . '/', $classname );
 
 	}
 
 
-	private function prepare( $items, $parent = 0 ) {
+	private function prepare( $items, $parent_id = 0 ) {
 
 		$prepared = array();
 
 		foreach ( $items as $item ) {
-			if ( (int) $item->menu_item_parent === $parent ) {
+			if ( (int) $item->menu_item_parent === $parent_id ) {
 				$children = $this->prepare( $items, (int) $item->ID );
 
 				$prepared[] = (object) array(
