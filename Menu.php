@@ -9,13 +9,30 @@
 
 namespace ThemePlate;
 
+use WP_Term;
+
+/**
+ * @phpstan-type DecoratedMenuItem \WP_Post&object{
+ *      menu_item_parent: string,
+ *      title: string,
+ *      url: string,
+ *      target: string,
+ *      attr_title: string,
+ *      description: string,
+ *      classes: array<int, string>,
+ *      xfn: string,
+ *      current: bool,
+ *      current_item_ancestor: bool,
+ *      current_item_parent: bool,
+ * }
+ */
 class Menu {
 
-	private $object;
-	private $items = array();
+	private ?WP_Term $object = null;
+	private array $items     = array();
 
 
-	public function __construct( $location ) {
+	public function __construct( string $location ) {
 
 		$locations = get_nav_menu_locations();
 
@@ -31,9 +48,9 @@ class Menu {
 	}
 
 
-	private function filter( $classname ) {
+	private function filter( string $classname ): bool {
 
-		if ( ! $classname ) {
+		if ( '' === $classname ) {
 			return false;
 		}
 
@@ -57,12 +74,13 @@ class Menu {
 		// menu-item-type-test menu-item-object-test page-item-2 current-test-ancestor current-test-parent
 		$pattern = '^(menu-item-(type|object)-\w+|page-item-\d+|current-\w+-(parent|ancestor))$';
 
-		return ! preg_match( '/' . $pattern . '/', $classname );
+		return in_array( preg_match( '/' . $pattern . '/', $classname ), array( 0, false ), true );
 
 	}
 
 
-	private function prepare( $items, $parent_id = 0 ) {
+	/** @param DecoratedMenuItem[] $items */
+	private function prepare( array $items, int $parent_id = 0 ): array {
 
 		$prepared = array();
 
@@ -95,42 +113,42 @@ class Menu {
 	}
 
 
-	public function get() {
+	public function get(): WP_Term {
 
 		return $this->object;
 
 	}
 
 
-	public function get_id() {
+	public function get_id(): int {
 
 		return $this->object->term_id ?? 0;
 
 	}
 
 
-	public function get_name() {
+	public function get_name(): string {
 
 		return $this->object->name ?? '';
 
 	}
 
 
-	public function get_slug() {
+	public function get_slug(): string {
 
 		return $this->object->slug ?? '';
 
 	}
 
 
-	public function get_count() {
+	public function get_count(): int {
 
 		return $this->object->count ?? 0;
 
 	}
 
 
-	public function get_items() {
+	public function get_items(): array {
 
 		return $this->items;
 
