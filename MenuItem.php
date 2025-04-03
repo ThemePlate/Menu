@@ -11,6 +11,21 @@ namespace ThemePlate;
 
 use WP_Post;
 
+/**
+ * @phpstan-type DecoratedMenuItem WP_Post&object{
+ *      menu_item_parent: string,
+ *      title: string,
+ *      url: string,
+ *      target: string,
+ *      attr_title: string,
+ *      description: string,
+ *      classes: array<int, string>,
+ *      xfn: string,
+ *      current: bool,
+ *      current_item_ancestor: bool,
+ *      current_item_parent: bool,
+ * }
+ */
 class MenuItem {
 
 	public int $id;
@@ -21,13 +36,16 @@ class MenuItem {
 	public string $target;
 	public string $title;
 	public string $info;
+	/** @var string[] */
 	public array $classes;
 	public string $xfn;
+	/** @var MenuItem[] */
 	public array $children;
 	public bool $is_active;
 	public bool $is_active_parent;
 	public bool $is_active_ancestor;
 
+	/** @param DecoratedMenuItem $post */
 	public function __construct( WP_Post $post ) {
 
 		$this->id                 = $post->ID;

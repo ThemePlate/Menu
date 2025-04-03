@@ -11,10 +11,13 @@ namespace ThemePlate;
 
 use WP_Term;
 
+/** @phpstan-import-type DecoratedMenuItem from MenuItem */
 class Menu {
 
 	private ?WP_Term $object = null;
-	private array $items     = array();
+
+	/** @var MenuItem[] */
+	private array $items = array();
 
 
 	public function __construct( string $location ) {
@@ -42,6 +45,10 @@ class Menu {
 	}
 
 
+	/**
+	 * @param DecoratedMenuItem[] $items
+	 * @return MenuItem[]
+	 */
 	private function prepare( array $items, int $parent_id = 0 ): array {
 
 		$prepared = array();
@@ -96,6 +103,7 @@ class Menu {
 	}
 
 
+	/** @return MenuItem[] */
 	public function get_items(): array {
 
 		return $this->items;
