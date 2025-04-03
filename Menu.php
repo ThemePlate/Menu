@@ -46,10 +46,13 @@ class Menu {
 
 		$items = wp_get_nav_menu_items( $this->object );
 
+		if ( ! $items ) {
+			return;
+		}
+
 		_wp_menu_item_classes_by_context( $items );
 
-		// phpcs:ignore Universal.Operators.DisallowShortTernary
-		$this->items = $this->prepare( $items ?: array() );
+		$this->items = $this->prepare( $items );
 
 	}
 
