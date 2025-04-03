@@ -11,21 +11,6 @@ namespace ThemePlate;
 
 use WP_Term;
 
-/**
- * @phpstan-type DecoratedMenuItem \WP_Post&object{
- *      menu_item_parent: string,
- *      title: string,
- *      url: string,
- *      target: string,
- *      attr_title: string,
- *      description: string,
- *      classes: array<int, string>,
- *      xfn: string,
- *      current: bool,
- *      current_item_ancestor: bool,
- *      current_item_parent: bool,
- * }
- */
 class Menu {
 
 	private ?WP_Term $object = null;
@@ -57,63 +42,17 @@ class Menu {
 	}
 
 
-	private function filter( string $classname ): bool {
-
-		if ( '' === $classname ) {
-			return false;
-		}
-
-		$blacklist = array(
-			'menu-item',
-			'menu-item-home',
-			'menu-item-privacy-policy',
-			'current-menu-item',
-			'current-menu-ancestor',
-			'current-menu-parent',
-			'page_item',
-			'current_page_item',
-			'current_page_parent',
-			'current_page_ancestor',
-		);
-
-		if ( in_array( $classname, $blacklist, true ) ) {
-			return false;
-		}
-
-		// menu-item-type-test menu-item-object-test page-item-2 current-test-ancestor current-test-parent
-		$pattern = '^(menu-item-(type|object)-\w+|page-item-\d+|current-\w+-(parent|ancestor))$';
-
-		return in_array( preg_match( '/' . $pattern . '/', $classname ), array( 0, false ), true );
-
-	}
-
-
-	/** @param DecoratedMenuItem[] $items */
 	private function prepare( array $items, int $parent_id = 0 ): array {
 
 		$prepared = array();
 
 		foreach ( $items as $item ) {
 			if ( (int) $item->menu_item_parent === $parent_id ) {
-				$children = $this->prepare( $items, (int) $item->ID );
+				$item = new MenuItem( $item );
 
-				$prepared[] = (object) array(
-					'id'                 => $item->ID,
-					'slug'               => $item->post_name,
-					'parent'             => (int) $item->menu_item_parent,
-					'label'              => $item->title,
-					'url'                => $item->url,
-					'target'             => $item->target,
-					'title'              => $item->attr_title,
-					'info'               => $item->description,
-					'classes'            => array_filter( $item->classes, array( $this, 'filter' ) ),
-					'xfn'                => $item->xfn,
-					'children'           => $children,
+				$item->children = $this->prepare( $items, (int) $item->id );
 
-					'is_active'          => $item->current,
-					'is_active_parent'   => $item->current_item_parent,
-					'is_active_ancestor' => $item->current_item_ancestor,
-				);
+				$prepared[] = $item;
 			}
 		}
 
