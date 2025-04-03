@@ -61,7 +61,7 @@ class Menu {
 	}
 
 
-	public function get(): WP_Term {
+	public function get(): ?WP_Term {
 
 		return $this->object;
 
