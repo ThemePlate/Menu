@@ -14,15 +14,15 @@
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true,
 			"phpstan/extension-installer": true
-		}
+		},
+		"optimize-autoloader": true,
+		"preferred-install": "dist",
+		"sort-packages": true
 	},
 	"scripts": {
 		"analyse": "themeplate analyse",
 		"lint": "themeplate lint",
-		"fix": "themeplate fix",
-		"test": "themeplate test",
-		"test:unit": "themeplate test --type unit",
-		"test:integration": "themeplate test --type integration"
+		"fix": "themeplate fix"
 	},
 	"require": {
 		"php": "^7.4|^8.2"
